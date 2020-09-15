@@ -4,47 +4,89 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Cleaning Hogwarts</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <title>Hogwarts Student List</title>
   </head>
   <body>
-    <div class="heading">
-      <h1>HOGWARTS SCHOOL OF WITCHCRAFT AND WIZARDRY</h1>
-      <h2>List of Students</h2>
-    </div>
-    <input type="search" id="student_search" />
-    <nav>
-      <button class="filter" data-filter="gryffindor">Gryffindor</button>
-      <button class="filter" data-filter="hufflepuff">Hufflepuff</button>
-      <button class="filter" data-filter="ravenclaw">Ravenclaw</button>
-      <button class="filter" data-filter="slytherin">Slytherin</button>
-      <button class="filter" data-filter="expelled">Expelled</button>
-
-      <label id="sort_label" for="sorting">Sort by</label>
-      <select id="sorting">
-        <option value="firstname">Firstname</option>
-        <option value="lastname">Lastname</option>
-      </select>
-      <button class="sort" data-action="sort">Sort Students</button>
-    </nav>
-    <main></main>
-    <template>
-      <article>
-        <div class="student_image">
+    <section id="popup">
+      <button class="close">X</button>
+      <article class="info">
+        <div class="picture">
           <img src="" alt="" />
         </div>
-        <div class="student_info">
+        <div class="texts">
           <h2 class="name"></h2>
           <p class="gender"></p>
           <p class="house"></p>
-        </div>
-        <div class="buttons_wrapper">
-          <button class="expel">expel</button>
-          <button class="add_prefect">add prefect</button>
-          <button class="add_prefect">add prefect</button>
-          <button class="add_prefect">add prefect</button>
+          <p class="prefect"></p>
+          <p class="squad"></p>
         </div>
       </article>
-    </template>
+    </section>
+    <section id="container">
+      <div class="heading">
+        <h1>HOGWARTS SCHOOL OF WITCHCRAFT AND WIZARDRY</h1>
+        <h2>List of Students</h2>
+      </div>
+      <div class="search_field">
+        <input
+          type="search"
+          id="student_search"
+          placeholder="Search for a student"
+        />
+        <button class="search_button">Search</button>
+      </div>
+      <nav>
+        <button class="filter" data-filter="gryffindor">Gryffindor</button>
+        <button class="filter" data-filter="hufflepuff">Hufflepuff</button>
+        <button class="filter" data-filter="ravenclaw">Ravenclaw</button>
+        <button class="filter" data-filter="slytherin">Slytherin</button>
+        <button class="filter" data-filter="expelled">Expelled</button>
+
+        <label id="sort_label" for="sorting">Sort by</label>
+
+        <select id="sorting">
+          <option value="firstname">Firstname</option>
+          <option value="lastname">Lastname</option>
+        </select>
+        <button class="sort" data-action="sort">Sort Students</button>
+      </nav>
+      <div class="display_box">
+        <p class="total_students">Students: <span> </span></p>
+        <p class="expelled_students">Expelled: <span> </span></p>
+        <p class="gryffindor_students">Gryffindor: <span> </span></p>
+        <p class="hufflepuff_students">Hufflepuff: <span> </span></p>
+        <p class="ravenclaw_students">Ravenclaw: <span> </span></p>
+        <p class="slytherin_students">Slytherin: <span> </span></p>
+        <p class="displayed_students">Displayed: <span> </span></p>
+      </div>
+      <main></main>
+      <template>
+        <article>
+          <div class="student_image">
+            <img src="" alt="" />
+          </div>
+          <div class="student_info">
+            <h2 class="name"></h2>
+            <p class="gender"></p>
+            <p class="house"></p>
+          </div>
+          <div class="buttons_wrapper">
+            <button class="expel">expel</button>
+            <button class="add_prefect">add to squad</button>
+            <button class="add_prefect">remove prefect</button>
+            <button class="add_prefect">add prefect</button>
+          </div>
+        </article>
+      </template>
+    </section>
   </body>
   <script src="script.js"></script>
 </html>

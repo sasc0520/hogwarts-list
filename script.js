@@ -77,8 +77,27 @@ function displayStudents() {
     clone.querySelector(".gender").textContent = student.gender;
     clone.querySelector(".house").textContent = student.house;
     clone.querySelector("img").src = `images/${student.img}`;
+    clone
+      .querySelector("img")
+      .addEventListener("click", () => showDetails(student));
+
     document.querySelector("main").appendChild(clone);
   });
+}
+
+function showDetails(student) {
+  document.querySelector("#popup").style.display = "block";
+  document.querySelector(".close").addEventListener("click", hideDetails);
+
+  document.querySelector(".name").textContent =
+    student.firstName + " " + student.lastName;
+  document.querySelector(".gender").textContent = student.gender;
+  document.querySelector(".house").textContent = student.house;
+  document.querySelector("img").src = `images/${student.img}`;
+}
+
+function hideDetails() {
+  document.querySelector("#popup").style.display = "none";
 }
 
 function capitalize(name) {
