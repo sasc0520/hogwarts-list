@@ -1,0 +1,74 @@
+* {
+  margin: 0 auto;
+}
+
+.heading {
+  text-align: center;
+  margin-top: 40px;
+}
+
+body {
+  background-color: #c49686;
+  max-width: 1000px;
+}
+
+nav {
+  display: flex;
+  align-content: space-around;
+  align-items: baseline;
+  margin: 40px 30px 40px 30px;
+}
+
+button {
+  background-color: #443036;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+#sort_label {
+  font-family: sans-serif;
+}
+
+#sorting {
+  border-radius: 5px;
+  border: none;
+  height: 30px;
+  padding: 7px;
+}
+
+#student_search {
+  display: flex;
+  margin-top: 40px;
+  border-radius: 10px;
+  border: none;
+  height: 30px;
+}
+
+article {
+  background-color: #efe3df;
+  border-radius: 10px;
+  width: 100%;
+  padding: 25px 25px 25px 25px;
+  display: flex;
+}
+
+.buttons_wrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+.buttons_wrapper,
+button {
+  margin: 0px 10px 10px 10px;
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
+  grid-gap: 20px;
+}

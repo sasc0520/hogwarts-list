@@ -18,6 +18,7 @@ function loadJSON() {
       prepareObjects(jsonData);
     });
 }
+
 function prepareObjects(jsonData) {
   jsonData.forEach((jsonObject) => {
     // we need to take every item from the JSON data and trim it and split it into parts
@@ -58,12 +59,28 @@ function prepareObjects(jsonData) {
     // we assign the newStudent's img the function of findImage with the parameters of firstName and lastName
     // that is due to the fact that the image files' pattern is based on the names of the students
     newStudent.img = findImage(newStudent.firstName, newStudent.lastName);
+    newStudent.gender = capitalize(jsonObject.gender.trim());
     // we push the newStudent object so that it is assigned all these new properties and the values of these properties
     studentArray.push(newStudent);
   });
   // and for us to see it, we use console.table which just displays what we have made in a table in the console
   console.table(studentArray);
+  displayStudents();
 }
+
+function displayStudents() {
+  const template = document.querySelector("template");
+  studentArray.forEach((student) => {
+    let clone = template.cloneNode(true).content;
+    clone.querySelector(".name").textContent =
+      student.firstName + " " + student.lastName;
+    clone.querySelector(".gender").textContent = student.gender;
+    clone.querySelector(".house").textContent = student.house;
+    clone.querySelector("img").src = `images/${student.img}`;
+    document.querySelector("main").appendChild(clone);
+  });
+}
+
 function capitalize(name) {
   // we need to check if a name has a hyphen as one student's lastName contains a hyphen,
   // and we want whatever is at the end of this hyphen to also be capitalized
@@ -104,5 +121,4 @@ function findImage(firstName, lastName) {
       return null;
     }
   }
-  // console.log(imageName);
 }

@@ -3,8 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Cleaning Hogwarts</title>
   </head>
-  <body></body>
+  <body>
+    <div class="heading">
+      <h1>HOGWARTS SCHOOL OF WITCHCRAFT AND WIZARDRY</h1>
+      <h2>List of Students</h2>
+    </div>
+    <input type="search" id="student_search" />
+    <nav>
+      <button class="filter" data-filter="gryffindor">Gryffindor</button>
+      <button class="filter" data-filter="hufflepuff">Hufflepuff</button>
+      <button class="filter" data-filter="ravenclaw">Ravenclaw</button>
+      <button class="filter" data-filter="slytherin">Slytherin</button>
+      <button class="filter" data-filter="expelled">Expelled</button>
+
+      <label id="sort_label" for="sorting">Sort by</label>
+      <select id="sorting">
+        <option value="firstname">Firstname</option>
+        <option value="lastname">Lastname</option>
+      </select>
+      <button class="sort" data-action="sort">Sort Students</button>
+    </nav>
+    <main></main>
+    <template>
+      <article>
+        <div class="student_image">
+          <img src="" alt="" />
+        </div>
+        <div class="student_info">
+          <h2 class="name"></h2>
+          <p class="gender"></p>
+          <p class="house"></p>
+        </div>
+        <div class="buttons_wrapper">
+          <button class="expel">expel</button>
+          <button class="add_prefect">add prefect</button>
+          <button class="add_prefect">add prefect</button>
+          <button class="add_prefect">add prefect</button>
+        </div>
+      </article>
+    </template>
+  </body>
   <script src="script.js"></script>
 </html>
