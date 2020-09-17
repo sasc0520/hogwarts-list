@@ -12,7 +12,7 @@ const Student = {
   house: "",
   bloodstatus: "N/A",
   prefect: "No prefects given",
-  squad: false,
+  squad: "Not inquisitorial squad member",
   expelled: "Not expelled",
 };
 
@@ -25,6 +25,7 @@ function loadJSON() {
       prepareObjects(jsonData);
       registerButtons();
       displayList(studentArray);
+      displayBox();
     });
 }
 
@@ -81,6 +82,14 @@ function prepareObjects(jsonData) {
 function displayList(students) {
   document.querySelector("#list main").innerHTML = "";
   students.forEach(displayStudent);
+}
+
+function displayBox() {
+  document.querySelector("#container > div.display_box > p.total_students > span").textContent = "34";
+  document.querySelector("#container > div.display_box > p.expelled_students > span").textContent = expelledStudents.length;
+  // document.querySelector("#container > div.display_box > p.gryffindor_students > span").textContent = student.house.length;
+  // document.querySelector("#container > div.display_box > p.total_students > span").textContent = studentArray.length;
+  document.querySelector("#container > div.display_box > p.displayed_students > span").textContent = studentArray.length;
 }
 
 function displayStudent(student) {
@@ -144,8 +153,6 @@ function findImage(firstName, lastName) {
     img = lastName.toLowerCase() + "_" + firstName.toLowerCase() + ".png";
     request.open("HEAD", "/images/" + img, false);
     request.send();
-    console.log("/images/" + img);
-    console.log(request.status);
 
     if (request.status !== 404) {
       return img;
@@ -172,8 +179,18 @@ function expelStudent(student) {
     student.expelled = "Expelled";
     studentArray.splice(studentArray.indexOf(student), 1);
     expelledStudents.push(student);
+    document.querySelector(".dialogue").classList.remove("hide");
+    document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} has been expelled`;
+    setTimeout(() => {
+      document.querySelector(".dialogue").classList.add("hide");
+    }, 1500);
   } else {
-    console.log("already expelled");
+    document.querySelector(".dialogue").classList.remove("hide");
+    document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} has already been expelled`;
+    setTimeout(() => {
+      document.querySelector(".dialogue").classList.add("hide");
+    }, 1500);
   }
+  displayBox();
   displayList(studentArray);
 }
