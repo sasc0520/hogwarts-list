@@ -3,6 +3,14 @@
   box-sizing: border-box;
 }
 
+:root {
+  --button-main: #443036;
+  --button-text: #efe3df;
+  --article: #efe3df;
+}
+
+/************************************************************* more general styling **********************************************************************/
+
 .heading {
   text-align: center;
   margin-top: 40px;
@@ -25,16 +33,79 @@ nav {
 }
 
 button {
-  background-color: #443036;
+  background-color: var(--button-main);
   border: none;
   border-radius: 5px;
   padding: 10px 10px 10px 10px;
   font-family: sans-serif;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--button-text);
   letter-spacing: 1px;
   cursor: pointer;
 }
+
+button:hover {
+}
+
+h2 {
+  color: #3a1c19;
+  font-family: "Yeseva One", cursive;
+  line-height: 30px;
+}
+
+p {
+  color: #3a1c19;
+  font-family: "Raleway", sans-serif;
+  line-height: 30px;
+}
+
+article {
+  background-color: var(--article);
+  border-radius: 10px;
+  width: 100%;
+  padding: 25px 25px 25px 25px;
+  display: flex;
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
+  grid-gap: 40px;
+}
+
+/*********************************************************** details popup styling *****************************************************************/
+
+.closing_button {
+  margin: 0;
+}
+
+.close {
+  background-color: #443036;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
+  font-family: sans-serif;
+  color: #fff;
+  cursor: pointer;
+}
+
+#popup {
+  display: none;
+  position: fixed;
+  background-color: hsla(282, 14%, 12%, 0.74);
+  height: 100vh;
+  width: 100vw;
+}
+
+#popup .info {
+  display: flex;
+  position: relative;
+  padding: 50px;
+  top: 25%;
+  width: 80%;
+}
+
+/****************************************************** buttons and other navigational styling  *********************************************************/
 
 #sort_label {
   font-family: "Raleway", sans-serif;
@@ -59,26 +130,6 @@ button {
   height: 30px;
 }
 
-h2 {
-  color: #3a1c19;
-  font-family: "Yeseva One", cursive;
-  line-height: 30px;
-}
-
-p {
-  color: #3a1c19;
-  font-family: "Raleway", sans-serif;
-  line-height: 30px;
-}
-
-article {
-  background-color: #efe3df;
-  border-radius: 10px;
-  width: 100%;
-  padding: 25px 25px 25px 25px;
-  display: flex;
-}
-
 .buttons_wrapper {
   display: flex;
   align-items: flex-end;
@@ -94,25 +145,5 @@ article {
   border-radius: 15px;
   display: flex;
   padding: 7px;
-  margin-bottom: 25px;
-}
-
-#popup {
-  display: none;
-  position: fixed;
-
-  background-color: hsla(282, 14%, 12%, 0.74);
-  height: 100vh;
-  width: 100vw;
-}
-
-#popup .info {
-  display: flex;
-  width: 80%;
-}
-
-main {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
-  grid-gap: 20px;
+  margin-bottom: 40px;
 }

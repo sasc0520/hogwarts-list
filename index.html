@@ -4,20 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap" rel="stylesheet" />
     <title>Hogwarts Student List</title>
   </head>
   <body>
     <section id="popup">
-      <button class="close">X</button>
       <article class="info">
+        <div class="closing_button">
+          <button class="close">X</button>
+        </div>
         <div class="picture">
           <img src="" alt="" />
         </div>
@@ -25,8 +21,10 @@
           <h2 class="name"></h2>
           <p class="gender"></p>
           <p class="house"></p>
+          <p class="blood"></p>
           <p class="prefect"></p>
           <p class="squad"></p>
+          <p class="expelled"></p>
         </div>
       </article>
     </section>
@@ -36,28 +34,21 @@
         <h2>List of Students</h2>
       </div>
       <div class="search_field">
-        <input
-          type="search"
-          id="student_search"
-          placeholder="Search for a student"
-        />
+        <input type="search" id="student_search" placeholder="Search for a student" />
         <button class="search_button">Search</button>
       </div>
       <nav>
-        <button class="filter" data-filter="gryffindor">Gryffindor</button>
-        <button class="filter" data-filter="hufflepuff">Hufflepuff</button>
-        <button class="filter" data-filter="ravenclaw">Ravenclaw</button>
-        <button class="filter" data-filter="slytherin">Slytherin</button>
-        <button class="filter" data-filter="expelled">Expelled</button>
-
+        <button class="filter" data-action="filter" data-option="gryffindor">Gryffindor</button>
+        <button class="filter" data-action="filter" data-option="hufflepuff">Hufflepuff</button>
+        <button class="filter" data-action="filter" data-option="ravenclaw">Ravenclaw</button>
+        <button class="filter" data-action="filter" data-option="slytherin">Slytherin</button>
+        <button class="filter" data-action="filter" data-option="expelled">Expelled</button>
+        <button class="filter" data-action="filter" data-option="all">All</button>
         <label id="sort_label" for="sorting">Sort by</label>
-
-        <select id="sorting">
-          <option value="firstname">Firstname</option>
-          <option value="lastname">Lastname</option>
-        </select>
-        <button class="sort" data-action="sort">Sort Students</button>
+        <button class="sort" data-action="sort">Firstname</button>
+        <button class="sort" data-action="sort">Lastname</button>
       </nav>
+
       <div class="display_box">
         <p class="total_students">Students: <span> </span></p>
         <p class="expelled_students">Expelled: <span> </span></p>
@@ -67,7 +58,11 @@
         <p class="slytherin_students">Slytherin: <span> </span></p>
         <p class="displayed_students">Displayed: <span> </span></p>
       </div>
-      <main></main>
+      <div id="list">
+        <main>
+          <!-- content is copied in here  -->
+        </main>
+      </div>
       <template>
         <article>
           <div class="student_image">
