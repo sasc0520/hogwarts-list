@@ -1,6 +1,8 @@
 "use strict";
 const endpoint = "https://petlatkea.dk/2020/hogwarts/students.json";
 let studentArray = [];
+let filteredArray = [];
+let expelledStudents = [];
 const Student = {
   firstName: "",
   lastName: "",
@@ -8,19 +10,32 @@ const Student = {
   nickName: "",
   img: "",
   house: "",
+  bloodstatus: "N/A",
+  prefect: "No prefects given",
+  squad: false,
+  expelled: "Not expelled",
 };
+
 window.addEventListener("DOMContentLoaded", loadJSON);
 function loadJSON() {
   fetch(endpoint)
-    .then((response) => response.json())
-    .then((jsonData) => {
+    .then(response => response.json())
+    .then(jsonData => {
       // when loaded, prepare objects
       prepareObjects(jsonData);
+      registerButtons();
+      displayList(studentArray);
     });
 }
 
+function registerButtons() {
+  document.querySelectorAll(".filter").forEach(elm => {
+    elm.addEventListener("click", filterStudents);
+  });
+}
+
 function prepareObjects(jsonData) {
-  jsonData.forEach((jsonObject) => {
+  jsonData.forEach(jsonObject => {
     // we need to take every item from the JSON data and trim it and split it into parts
     // however trimming it immiedtaely also immediately removes both types of extra spaces
     let nameArray = jsonObject.fullname.trim().split(" ");
@@ -44,9 +59,7 @@ function prepareObjects(jsonData) {
       // therefore we use substring() method, where we say at position 1 ("(" = 1)Ernie"") and then the length og whatever is in nameArray position 1
       // and then we subtract this with 1 so we get "Ernie" and not "Erni" - and all of this in capitalized version
       if (nameArray[1].includes('"')) {
-        newStudent.nickName = capitalize(
-          nameArray[1].substring(1, nameArray[1].length - 1)
-        );
+        newStudent.nickName = capitalize(nameArray[1].substring(1, nameArray[1].length - 1));
         // and then we say that middleName does not exist as if there is a nickName there is not a middleName as well
         newStudent.middleName = null;
       } else {
@@ -63,36 +76,39 @@ function prepareObjects(jsonData) {
     // we push the newStudent object so that it is assigned all these new properties and the values of these properties
     studentArray.push(newStudent);
   });
-  // and for us to see it, we use console.table which just displays what we have made in a table in the console
-  console.table(studentArray);
-  displayStudents();
 }
 
-function displayStudents() {
-  const template = document.querySelector("template");
-  studentArray.forEach((student) => {
-    let clone = template.cloneNode(true).content;
-    clone.querySelector(".name").textContent =
-      student.firstName + " " + student.lastName;
-    clone.querySelector(".gender").textContent = student.gender;
-    clone.querySelector(".house").textContent = student.house;
-    clone.querySelector("img").src = `images/${student.img}`;
-    clone
-      .querySelector("img")
-      .addEventListener("click", () => showDetails(student));
+function displayList(students) {
+  document.querySelector("#list main").innerHTML = "";
+  students.forEach(displayStudent);
+}
 
-    document.querySelector("main").appendChild(clone);
-  });
+function displayStudent(student) {
+  const template = document.querySelector("template");
+  let clone = template.cloneNode(true).content;
+  clone.querySelector(".name").textContent = student.firstName + " " + student.lastName;
+  clone.querySelector(".gender").textContent = student.gender;
+  clone.querySelector(".house").textContent = student.house;
+  clone.querySelector("img").src = `images/${student.img}`;
+  clone.querySelector("img").addEventListener("click", () => showDetails(student));
+
+  clone.querySelector(".expel").addEventListener("click", () => expelStudent(student));
+
+  document.querySelector("main").appendChild(clone);
 }
 
 function showDetails(student) {
   document.querySelector("#popup").style.display = "block";
   document.querySelector(".close").addEventListener("click", hideDetails);
 
-  document.querySelector(".name").textContent =
-    student.firstName + " " + student.lastName;
+  document.querySelector(".name").textContent = student.firstName + " " + student.lastName;
   document.querySelector(".gender").textContent = student.gender;
   document.querySelector(".house").textContent = student.house;
+  document.querySelector(".blood").textContent = student.bloodstatus;
+  document.querySelector(".prefect").textContent = student.prefect;
+  document.querySelector(".squad").textContent = student.squad;
+  document.querySelector(".expelled").textContent = student.expelled;
+
   document.querySelector("img").src = `images/${student.img}`;
 }
 
@@ -107,10 +123,7 @@ function capitalize(name) {
     let hyphen = name.indexOf("-") + 1;
     return (
       // we tell the computer to return the following
-      name[0].toUpperCase() +
-      name.substring(1, hyphen) +
-      name[hyphen].toUpperCase() +
-      name.substring(hyphen + 1, name.length).toLowerCase()
+      name[0].toUpperCase() + name.substring(1, hyphen) + name[hyphen].toUpperCase() + name.substring(hyphen + 1, name.length).toLowerCase()
     );
   }
   return name[0].toUpperCase() + name.substring(1, name.length).toLowerCase();
@@ -140,4 +153,27 @@ function findImage(firstName, lastName) {
       return null;
     }
   }
+}
+
+function filterStudents() {
+  let filter = this.dataset.option;
+  if (filter === "all") {
+    filteredArray = studentArray;
+  } else if (filter === "expelled") {
+    filteredArray = expelledStudents;
+  } else {
+    filteredArray = studentArray.filter(elm => elm.house.toLowerCase() === filter);
+  }
+  displayList(filteredArray);
+}
+
+function expelStudent(student) {
+  if (student.expelled === "Not expelled") {
+    student.expelled = "Expelled";
+    studentArray.splice(studentArray.indexOf(student), 1);
+    expelledStudents.push(student);
+  } else {
+    console.log("already expelled");
+  }
+  displayList(studentArray);
 }
