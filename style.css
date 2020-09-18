@@ -103,11 +103,19 @@ main {
 }
 
 #popup .info {
-  display: flex;
   position: relative;
-  padding: 50px;
-  top: 25%;
+  padding: 100px;
+  top: 5%;
   width: 80%;
+  height: 550px;
+}
+
+#popup .picture {
+  margin-left: 10em;
+}
+
+#popup .texts {
+  margin-left: -15em;
 }
 
 /****************************************************** buttons and other navigational styling  *********************************************************/
@@ -169,4 +177,16 @@ main {
   padding: 50px;
   top: 25%;
   width: 80%;
+}
+.gryffindor {
+  background-image: url("crests/gryffindor.png");
+}
+.hufflepuff {
+  background-image: url("crests/hufflepuff.png");
+}
+.ravenclaw {
+  background-image: url("crests/ravenclaw.png");
+}
+.slytherin {
+  background-image: url("crests/slytherin.png");
 }

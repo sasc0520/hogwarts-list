@@ -26,12 +26,19 @@ function loadJSON() {
       registerButtons();
       displayList(studentArray);
       displayBox();
+      addHouseTheme(studentArray);
     });
 }
 
 function registerButtons() {
   document.querySelectorAll(".filter").forEach(elm => {
     elm.addEventListener("click", filterStudents);
+  });
+  // document.querySelectorAll(".filter").forEach(elm => {
+  //   elm.addEventListener("click", addHouseTheme);
+  // });
+  document.querySelectorAll(".sort").forEach(elm => {
+    elm.addEventListener("click", selectSort);
   });
 }
 
@@ -87,8 +94,10 @@ function displayList(students) {
 function displayBox() {
   document.querySelector("#container > div.display_box > p.total_students > span").textContent = "34";
   document.querySelector("#container > div.display_box > p.expelled_students > span").textContent = expelledStudents.length;
-  // document.querySelector("#container > div.display_box > p.gryffindor_students > span").textContent = student.house.length;
-  // document.querySelector("#container > div.display_box > p.total_students > span").textContent = studentArray.length;
+  document.querySelector("#container > div.display_box > p.gryffindor_students > span").textContent = gryffindorStudents().length;
+  document.querySelector("#container > div.display_box > p.hufflepuff_students > span").textContent = hufflepuffStudents().length;
+  document.querySelector("#container > div.display_box > p.ravenclaw_students > span").textContent = ravenclawStudents().length;
+  document.querySelector("#container > div.display_box > p.slytherin_students > span").textContent = slytherinStudents().length;
   document.querySelector("#container > div.display_box > p.displayed_students > span").textContent = studentArray.length;
 }
 
@@ -102,6 +111,7 @@ function displayStudent(student) {
   clone.querySelector("img").addEventListener("click", () => showDetails(student));
 
   clone.querySelector(".expel").addEventListener("click", () => expelStudent(student));
+  clone.querySelector(".add_member").addEventListener("click", () => addStudentToSquad(student));
 
   document.querySelector("main").appendChild(clone);
 }
@@ -123,6 +133,25 @@ function showDetails(student) {
 
 function hideDetails() {
   document.querySelector("#popup").style.display = "none";
+}
+
+function addHouseTheme(student) {
+  // document.querySelector("#popup .info").classList.remove("gryffindor");
+  // document.querySelector("#popup .info").classList.remove("hufflepuff");
+  // document.querySelector("#popup .info").classList.remove("ravenclaw");
+  // document.querySelector("#popup .info").classList.remove("slytherin");
+  console.log("are we here");
+
+  if (student.house === "Gryffindor") {
+    console.log("is gryffindor");
+    document.getElementById("popup").style.backgroundImage = url("images/gryffindor.png");
+  } else if (student.house == "hufflepuff") {
+    document.querySelector("#popup .info").classList.add("hufflepuff");
+  } else if (student.house == "ravenclaw") {
+    document.querySelector("#popup .info").classList.add("ravenclaw");
+  } else if (student.house == "slytherin") {
+    document.querySelector("#popup .info").classList.add("slytherin");
+  }
 }
 
 function capitalize(name) {
@@ -162,6 +191,27 @@ function findImage(firstName, lastName) {
   }
 }
 
+function gryffindorStudents() {
+  return studentArray.filter(elm => {
+    return elm.house === "Gryffindor";
+  });
+}
+function hufflepuffStudents() {
+  return studentArray.filter(elm => {
+    return elm.house === "Hufflepuff";
+  });
+}
+function ravenclawStudents() {
+  return studentArray.filter(elm => {
+    return elm.house === "Ravenclaw";
+  });
+}
+function slytherinStudents() {
+  return studentArray.filter(elm => {
+    return elm.house === "Slytherin";
+  });
+}
+
 function filterStudents() {
   let filter = this.dataset.option;
   if (filter === "all") {
@@ -172,6 +222,40 @@ function filterStudents() {
     filteredArray = studentArray.filter(elm => elm.house.toLowerCase() === filter);
   }
   displayList(filteredArray);
+}
+
+function selectSort(event) {
+  const sortBy = event.target.dataset.sort;
+  sortStudents(sortBy);
+}
+
+function sortStudents(sortBy) {
+  let sortedList = studentArray;
+
+  if (sortBy === "firstname") {
+    sortedList = sortedList.sort(sortByFirstname);
+  } else if (sortBy === "lastname") {
+    sortedList = sortedList.sort(sortByLastname);
+  }
+  // const sortedByLastname = list.sort(sortByLastname);
+  displayList(sortedList);
+  // displayList(sortedByLastname);
+}
+
+function sortByFirstname(studentA, studentB) {
+  if (studentA.firstName < studentB.firstName) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
+function sortByLastname(studentA, studentB) {
+  if (studentA.lastName < studentB.lastName) {
+    return -1;
+  } else {
+    return 1;
+  }
 }
 
 function expelStudent(student) {
@@ -192,5 +276,23 @@ function expelStudent(student) {
     }, 1500);
   }
   displayBox();
+  displayList(studentArray);
+}
+
+function addStudentToSquad(student) {
+  if (student.squad === "Not inquisitorial squad member") {
+    student.squad = "Member of the inquisitorial squad";
+    document.querySelector(".dialogue").classList.remove("hide");
+    document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is now a member of the inquisitorial squad`;
+    setTimeout(() => {
+      document.querySelector(".dialogue").classList.add("hide");
+    }, 1500);
+  } else {
+    document.querySelector(".dialogue").classList.remove("hide");
+    document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is already a member of the inquisitorial squad`;
+    setTimeout(() => {
+      document.querySelector(".dialogue").classList.add("hide");
+    }, 1500);
+  }
   displayList(studentArray);
 }
