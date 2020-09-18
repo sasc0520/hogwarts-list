@@ -26,7 +26,7 @@ function loadJSON() {
       registerButtons();
       displayList(studentArray);
       displayBox();
-      addHouseTheme(studentArray);
+      // addHouseTheme(studentArray);
     });
 }
 
@@ -129,6 +129,8 @@ function showDetails(student) {
   document.querySelector(".expelled").textContent = student.expelled;
 
   document.querySelector("img").src = `images/${student.img}`;
+
+  addHouseTheme(student);
 }
 
 function hideDetails() {
@@ -136,22 +138,12 @@ function hideDetails() {
 }
 
 function addHouseTheme(student) {
-  // document.querySelector("#popup .info").classList.remove("gryffindor");
-  // document.querySelector("#popup .info").classList.remove("hufflepuff");
-  // document.querySelector("#popup .info").classList.remove("ravenclaw");
-  // document.querySelector("#popup .info").classList.remove("slytherin");
-  console.log("are we here");
-
-  if (student.house === "Gryffindor") {
-    console.log("is gryffindor");
-    document.getElementById("popup").style.backgroundImage = url("images/gryffindor.png");
-  } else if (student.house == "hufflepuff") {
-    document.querySelector("#popup .info").classList.add("hufflepuff");
-  } else if (student.house == "ravenclaw") {
-    document.querySelector("#popup .info").classList.add("ravenclaw");
-  } else if (student.house == "slytherin") {
-    document.querySelector("#popup .info").classList.add("slytherin");
-  }
+  document.querySelector("#popup .info").classList.remove("gryffindor");
+  document.querySelector("#popup .info").classList.remove("hufflepuff");
+  document.querySelector("#popup .info").classList.remove("ravenclaw");
+  document.querySelector("#popup .info").classList.remove("slytherin");
+  const className = student.house.toLowerCase();
+  document.querySelector("#popup .info").classList.add(className);
 }
 
 function capitalize(name) {
