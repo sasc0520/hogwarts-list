@@ -27,9 +27,17 @@ window.addEventListener(
     prepareObjects(data[0]);
     registerButtons();
     displayList(studentArray);
-    displayBox();
   })
 );
+
+document.addEventListener("keydown", secretKeyStroke);
+
+function secretKeyStroke(e) {
+  if (e.code === "KeyH") {
+    hackTheSystem();
+  }
+}
+
 function loadJSON() {
   return fetch(endpoint).then(response => response.json());
 }
@@ -93,6 +101,8 @@ function prepareObjects(jsonData) {
 
 function getBloodStatus(student) {
   const studentName = student.lastName;
+  const values = ["Pure", "Half", "Muggle"];
+
   if (families.pure.indexOf(studentName) !== -1 && families.half.indexOf(studentName) === -1) {
     student.bloodstatus = "Pure";
   } else if (families.pure.indexOf(studentName) !== -1 && families.half.indexOf(studentName) !== -1) {
@@ -100,22 +110,30 @@ function getBloodStatus(student) {
   } else {
     student.bloodstatus = "Muggle";
   }
+  if (hacked) {
+    if (student.bloodstatus === "Pure") {
+      student.bloodstatus = values[Math.floor(Math.random() * values.length)];
+    } else {
+      student.bloodstatus = "Pure";
+    }
+  }
   return student.bloodstatus;
 }
 
 function displayList(students) {
   document.querySelector("#list main").innerHTML = "";
   students.forEach(displayStudent);
+  displayBox(students);
 }
 
-function displayBox() {
-  document.querySelector("#container > div.display_box > p.total_students > span").textContent = "34";
+function displayBox(students) {
+  document.querySelector("#container > div.display_box > p.total_students > span").textContent = studentArray.length;
   document.querySelector("#container > div.display_box > p.expelled_students > span").textContent = expelledStudents.length;
   document.querySelector("#container > div.display_box > p.gryffindor_students > span").textContent = gryffindorStudents().length;
   document.querySelector("#container > div.display_box > p.hufflepuff_students > span").textContent = hufflepuffStudents().length;
   document.querySelector("#container > div.display_box > p.ravenclaw_students > span").textContent = ravenclawStudents().length;
   document.querySelector("#container > div.display_box > p.slytherin_students > span").textContent = slytherinStudents().length;
-  document.querySelector("#container > div.display_box > p.displayed_students > span").textContent = studentArray.length;
+  document.querySelector("#container > div.display_box > p.displayed_students > span").textContent = students.length;
 }
 
 function displayStudent(student) {
@@ -157,22 +175,13 @@ function hideDetails() {
 }
 
 function addHouseTheme(student) {
-  document.querySelector("#popup .info").classList.remove("gryffindor");
-  document.querySelector("#popup .info").classList.remove("hufflepuff");
-  document.querySelector("#popup .info").classList.remove("ravenclaw");
-  document.querySelector("#popup .info").classList.remove("slytherin");
-  document.querySelector("#popup h2").classList.remove("gryffindor");
-  document.querySelector("#popup h2").classList.remove("hufflepuff");
-  document.querySelector("#popup h2").classList.remove("ravenclaw");
-  document.querySelector("#popup h2").classList.remove("slytherin");
-  // document.querySelector(".texts p").classList.remove("gryffindor");
-  // document.querySelector(".texts p").classList.remove("hufflepuff");
-  // document.querySelector(".texts p").classList.remove("ravenclaw");
-  // document.querySelector(".texts p").classList.remove("slytherin");
+  document.querySelector("#popup .info").className = "info";
+  document.querySelector("#popup h2").className = "";
+  document.querySelectorAll("#popup p").forEach(p => (p.className = ""));
   const className = student.house.toLowerCase();
   document.querySelector("#popup .info").classList.add(className);
-  // document.querySelector(".texts p").classList.add(className);
   document.querySelector("#popup h2").classList.add(className);
+  document.querySelectorAll("#popup p").forEach(p => p.classList.add(className));
 }
 
 function capitalize(name) {
@@ -207,7 +216,7 @@ function findImage(firstName, lastName) {
     if (request.status !== 404) {
       return img;
     } else {
-      return null;
+      return "placeholder.png";
     }
   }
 }
@@ -280,7 +289,14 @@ function sortByLastname(studentA, studentB) {
 }
 
 function expelStudent(student) {
-  if (student.expelled === "Not expelled") {
+  if (student.hacker === true) {
+    student.expelled = "Not expelled";
+    document.querySelector(".dialogue").classList.remove("hide");
+    document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} cannot be expelled`;
+    setTimeout(() => {
+      document.querySelector(".dialogue").classList.add("hide");
+    }, 2000);
+  } else if (student.expelled === "Not expelled") {
     student.expelled = "Expelled";
     studentArray.splice(studentArray.indexOf(student), 1);
     expelledStudents.push(student);
@@ -296,12 +312,21 @@ function expelStudent(student) {
       document.querySelector(".dialogue").classList.add("hide");
     }, 2000);
   }
-  displayBox();
   displayList(studentArray);
 }
 
 function addStudentToSquad(student) {
-  if ((student.squad === "Not a member" && student.bloodstatus === "Pure") || student.house === "Slytherin") {
+  if (hacked) {
+    student.squad = "Member";
+    setTimeout(() => {
+      student.squad = "Not a member";
+      document.querySelector(".dialogue").classList.remove("hide");
+      document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is removed again.`;
+      setTimeout(() => {
+        document.querySelector(".dialogue").classList.add("hide");
+      }, 2000);
+    }, 2000);
+  } else if ((student.squad === "Not a member" && student.bloodstatus === "Pure") || student.house === "Slytherin") {
     student.squad = "Member";
     document.querySelector(".dialogue").classList.remove("hide");
     document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is now a member of the inquisitorial squad`;
@@ -365,4 +390,23 @@ function removeStudentAsPrefect(student) {
       document.querySelector(".dialogue").classList.add("hide");
     }, 2000);
   }
+}
+
+function hackTheSystem() {
+  hacked = true;
+  const hacker = Object.create(Student);
+  hacker.firstName = "Sascha";
+  hacker.lastName = "Brouer";
+  hacker.img = "placeholder.png";
+  hacker.house = "Gryffindor";
+  hacker.gender = "An attack helicopter";
+  hacker.bloodstatus = "Half";
+  hacker.hacker = true;
+
+  studentArray.forEach(student => {
+    getBloodStatus(student);
+  });
+
+  studentArray.push(hacker);
+  displayList(studentArray);
 }
