@@ -1,0 +1,22 @@
+HTML
+
+-- fixing the fact that those who do not have images cannot be viewed in a popup as click event is on the img tag
+
+CSS
+
+-- WANT: to make popup texts in a different color depending on the house of the student in question
+-- fix the responsitivity of the article tags in the display list - it looks horrendous and makes it side scroll - NOT good!
+
+JS
+
+-- load 2 (adding the families json) JSON files knowing which files is fetched first
+
+-- calculate blood status depending on family
+
+-- and then put this into the inquisitorial function so that only pure bloods can be a member
+
+-- WANT: make it easy to see which filter you are on
+
+-- Hacking the system function
+
+DRAFT:

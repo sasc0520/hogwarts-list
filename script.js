@@ -1,8 +1,11 @@
 "use strict";
 const endpoint = "https://petlatkea.dk/2020/hogwarts/students.json";
+const familiesEndpoint = "https://petlatkea.dk/2020/hogwarts/families.json";
 let studentArray = [];
 let filteredArray = [];
 let expelledStudents = [];
+let families = {};
+let hacked = false;
 const Student = {
   firstName: "",
   lastName: "",
@@ -11,32 +14,33 @@ const Student = {
   img: "",
   house: "",
   bloodstatus: "N/A",
-  prefect: "No prefects given",
-  squad: "Not inquisitorial squad member",
+  prefect: "Not a prefect",
+  squad: "Not a member",
   expelled: "Not expelled",
 };
 
-window.addEventListener("DOMContentLoaded", loadJSON);
+window.addEventListener(
+  "DOMContentLoaded",
+  Promise.all([loadJSON(), loadFamilies()]).then(data => {
+    // when loaded, prepare objects
+    families = data[1];
+    prepareObjects(data[0]);
+    registerButtons();
+    displayList(studentArray);
+    displayBox();
+  })
+);
 function loadJSON() {
-  fetch(endpoint)
-    .then(response => response.json())
-    .then(jsonData => {
-      // when loaded, prepare objects
-      prepareObjects(jsonData);
-      registerButtons();
-      displayList(studentArray);
-      displayBox();
-      // addHouseTheme(studentArray);
-    });
+  return fetch(endpoint).then(response => response.json());
+}
+function loadFamilies() {
+  return fetch(familiesEndpoint).then(familyresponse => familyresponse.json());
 }
 
 function registerButtons() {
   document.querySelectorAll(".filter").forEach(elm => {
     elm.addEventListener("click", filterStudents);
   });
-  // document.querySelectorAll(".filter").forEach(elm => {
-  //   elm.addEventListener("click", addHouseTheme);
-  // });
   document.querySelectorAll(".sort").forEach(elm => {
     elm.addEventListener("click", selectSort);
   });
@@ -57,7 +61,7 @@ function prepareObjects(jsonData) {
       // if only 2 items then assign newStudent's lastname the capitalized version if whatever is on nameArray position 1 (this being lastName)
       newStudent.lastName = capitalize(nameArray[1]);
       // and then this means there is no middle name therefore we set it to null vecause 2 items are a firstName and a lastName
-      newStudent.middleName = null;
+      newStudent.middleName = " ";
       // now we check if the student has three items meaning a firstName, lastName and middleName
     } else if (nameArray.length == 3) {
       // if so we assign newStudent's lastName whatever (in capitalized version) is at the 2nd position of nameArray which would be middleName
@@ -69,7 +73,7 @@ function prepareObjects(jsonData) {
       if (nameArray[1].includes('"')) {
         newStudent.nickName = capitalize(nameArray[1].substring(1, nameArray[1].length - 1));
         // and then we say that middleName does not exist as if there is a nickName there is not a middleName as well
-        newStudent.middleName = null;
+        newStudent.middleName = " ";
       } else {
         // otherwise if it does not contain a "", then it should assign middleName whatever is at the 1st position in the nameArray being lastName
         newStudent.middleName = capitalize(nameArray[1]);
@@ -81,9 +85,16 @@ function prepareObjects(jsonData) {
     // that is due to the fact that the image files' pattern is based on the names of the students
     newStudent.img = findImage(newStudent.firstName, newStudent.lastName);
     newStudent.gender = capitalize(jsonObject.gender.trim());
+    newStudent.bloodstatus = getBloodStatus(newStudent);
     // we push the newStudent object so that it is assigned all these new properties and the values of these properties
     studentArray.push(newStudent);
   });
+}
+
+function getBloodStatus(student) {
+  const studentName = student.lastName;
+  studentName = nameArray[1];
+  console.log(studentName);
 }
 
 function displayList(students) {
@@ -104,14 +115,17 @@ function displayBox() {
 function displayStudent(student) {
   const template = document.querySelector("template");
   let clone = template.cloneNode(true).content;
-  clone.querySelector(".name").textContent = student.firstName + " " + student.lastName;
+  clone.querySelector(".name").textContent = student.firstName + " " + student.nickName + " " + student.middleName + " " + student.lastName;
   clone.querySelector(".gender").textContent = student.gender;
   clone.querySelector(".house").textContent = student.house;
   clone.querySelector("img").src = `images/${student.img}`;
   clone.querySelector("img").addEventListener("click", () => showDetails(student));
-
   clone.querySelector(".expel").addEventListener("click", () => expelStudent(student));
   clone.querySelector(".add_member").addEventListener("click", () => addStudentToSquad(student));
+  clone.querySelector(".add_prefect").addEventListener("click", () => {
+    checkingRules(student);
+  });
+  clone.querySelector(".remove_prefect").addEventListener("click", () => removeStudentAsPrefect(student));
 
   document.querySelector("main").appendChild(clone);
 }
@@ -120,14 +134,13 @@ function showDetails(student) {
   document.querySelector("#popup").style.display = "block";
   document.querySelector(".close").addEventListener("click", hideDetails);
 
-  document.querySelector(".name").textContent = student.firstName + " " + student.lastName;
+  document.querySelector(".name").textContent = student.firstName + " " + student.nickName + " " + student.middleName + " " + student.lastName;
   document.querySelector(".gender").textContent = student.gender;
-  document.querySelector(".house").textContent = student.house;
-  document.querySelector(".blood").textContent = student.bloodstatus;
-  document.querySelector(".prefect").textContent = student.prefect;
-  document.querySelector(".squad").textContent = student.squad;
-  document.querySelector(".expelled").textContent = student.expelled;
-
+  document.querySelector(".house > span").textContent = student.house;
+  document.querySelector(".blood > span").textContent = student.bloodstatus;
+  document.querySelector(".prefect > span").textContent = student.prefect;
+  document.querySelector(".squad > span").textContent = student.squad;
+  document.querySelector(".expelled > span").textContent = student.expelled;
   document.querySelector("img").src = `images/${student.img}`;
 
   addHouseTheme(student);
@@ -142,8 +155,18 @@ function addHouseTheme(student) {
   document.querySelector("#popup .info").classList.remove("hufflepuff");
   document.querySelector("#popup .info").classList.remove("ravenclaw");
   document.querySelector("#popup .info").classList.remove("slytherin");
+  document.querySelector("#popup h2").classList.remove("gryffindor");
+  document.querySelector("#popup h2").classList.remove("hufflepuff");
+  document.querySelector("#popup h2").classList.remove("ravenclaw");
+  document.querySelector("#popup h2").classList.remove("slytherin");
+  // document.querySelector(".texts p").classList.remove("gryffindor");
+  // document.querySelector(".texts p").classList.remove("hufflepuff");
+  // document.querySelector(".texts p").classList.remove("ravenclaw");
+  // document.querySelector(".texts p").classList.remove("slytherin");
   const className = student.house.toLowerCase();
   document.querySelector("#popup .info").classList.add(className);
+  // document.querySelector(".texts p").classList.add(className);
+  document.querySelector("#popup h2").classList.add(className);
 }
 
 function capitalize(name) {
@@ -259,32 +282,75 @@ function expelStudent(student) {
     document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} has been expelled`;
     setTimeout(() => {
       document.querySelector(".dialogue").classList.add("hide");
-    }, 1500);
+    }, 2000);
   } else {
     document.querySelector(".dialogue").classList.remove("hide");
     document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} has already been expelled`;
     setTimeout(() => {
       document.querySelector(".dialogue").classList.add("hide");
-    }, 1500);
+    }, 2000);
   }
   displayBox();
   displayList(studentArray);
 }
 
 function addStudentToSquad(student) {
-  if (student.squad === "Not inquisitorial squad member") {
-    student.squad = "Member of the inquisitorial squad";
+  if (student.squad === "Not a member") {
+    student.squad = "Member";
     document.querySelector(".dialogue").classList.remove("hide");
     document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is now a member of the inquisitorial squad`;
     setTimeout(() => {
       document.querySelector(".dialogue").classList.add("hide");
-    }, 1500);
+    }, 2000);
   } else {
     document.querySelector(".dialogue").classList.remove("hide");
     document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is already a member of the inquisitorial squad`;
     setTimeout(() => {
       document.querySelector(".dialogue").classList.add("hide");
-    }, 1500);
+    }, 2000);
   }
   displayList(studentArray);
+}
+
+function checkingRules(selectedStudent) {
+  const prefects = studentArray.filter(student => student.prefect === "Prefect" && student.house === selectedStudent.house);
+  if (prefects.length < 2) {
+    makePrefect(selectedStudent);
+  } else {
+    rulesMessage(selectedStudent);
+  }
+
+  function rulesMessage(student) {
+    document.querySelector(".dialogue").classList.remove("hide");
+    document.querySelector(".message").innerHTML = `There cannot be added any more prefects to ${student.house}`;
+    setTimeout(() => {
+      document.querySelector(".dialogue").classList.add("hide");
+    }, 2000);
+  }
+
+  function makePrefect(student) {
+    student.prefect = "Prefect";
+    document.querySelector(".dialogue").classList.remove("hide");
+    document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is now a prefect of ${student.house}`;
+    setTimeout(() => {
+      document.querySelector(".dialogue").classList.add("hide");
+    }, 2000);
+  }
+}
+
+function removeStudentAsPrefect(student) {
+  if (student.prefect === "Prefect") {
+    student.prefect = "Not a prefect";
+    document.querySelector(".dialogue").classList.remove("hide");
+    document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is no longer a prefect of ${student.house}`;
+    setTimeout(() => {
+      document.querySelector(".dialogue").classList.add("hide");
+    }, 2000);
+  } else {
+    document.querySelector(".dialogue").classList.remove("hide");
+    document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is already not a prefect`;
+    setTimeout(() => {
+      document.querySelector(".dialogue").classList.add("hide");
+    }, 2000);
+  }
 }

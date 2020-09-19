@@ -5,8 +5,14 @@
 
 :root {
   --button-main: #443036;
+  --button-hover: #916a75;
   --button-text: #efe3df;
+  --basic-text: #3a1c19;
   --article: #efe3df;
+  --gryffindor-text: #2b0c0c;
+  --hufflepuff-text: #30270a;
+  --ravenclaw-text: #0e0e2b;
+  --slytherin-text: #0f2209;
 }
 
 /************************************************************* more general styling **********************************************************************/
@@ -46,16 +52,24 @@ button {
 }
 
 button:hover {
+  background-color: var(--button-hover);
+}
+
+h1 {
+  color: var(--basic-text);
+  font-family: "Yeseva One", cursive;
+  line-height: 60px;
+  font-size: 2em;
 }
 
 h2 {
-  color: #3a1c19;
+  color: var(--basic-text);
   font-family: "Yeseva One", cursive;
   line-height: 30px;
 }
 
 p {
-  color: #3a1c19;
+  color: var(--basic-text);
   font-family: "Raleway", sans-serif;
   line-height: 30px;
 }
@@ -72,6 +86,13 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
   grid-gap: 40px;
+}
+
+label {
+  color: #3a1c19;
+  font-family: "Raleway", sans-serif;
+  line-height: 30px;
+  font-size: 1em;
 }
 
 .hide {
@@ -108,6 +129,19 @@ main {
   top: 5%;
   width: 80%;
   height: 550px;
+}
+
+#popup button {
+  background-color: var(--article);
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  color: var(--basic-text);
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 #popup .picture {
@@ -149,7 +183,7 @@ main {
 }
 
 .buttons_wrapper button {
-  margin: 0px 10px 10px 10px;
+  margin: 0px 5px 5px 5px;
   cursor: pointer;
 }
 
@@ -163,7 +197,6 @@ main {
 }
 
 .dialogue {
-  /* display: none; */
   position: fixed;
   background-color: hsla(282, 14%, 12%, 0.74);
   height: 100vh;
@@ -180,13 +213,17 @@ main {
 }
 .gryffindor {
   background-image: url("crests/gryffindor.png");
+  color: var(--gryffindor-text);
 }
 .hufflepuff {
   background-image: url("crests/hufflepuff.png");
+  color: var(--hufflepuff-text);
 }
 .ravenclaw {
   background-image: url("crests/ravenclaw.png");
+  color: var(--ravenclaw-text);
 }
 .slytherin {
   background-image: url("crests/slytherin.png");
+  color: var(--slytherin-text);
 }
