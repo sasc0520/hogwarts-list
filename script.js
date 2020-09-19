@@ -93,8 +93,14 @@ function prepareObjects(jsonData) {
 
 function getBloodStatus(student) {
   const studentName = student.lastName;
-  studentName = nameArray[1];
-  console.log(studentName);
+  if (families.pure.indexOf(studentName) !== -1 && families.half.indexOf(studentName) === -1) {
+    student.bloodstatus = "Pure";
+  } else if (families.pure.indexOf(studentName) !== -1 && families.half.indexOf(studentName) !== -1) {
+    student.bloodstatus = "Half";
+  } else {
+    student.bloodstatus = "Muggle";
+  }
+  return student.bloodstatus;
 }
 
 function displayList(students) {
@@ -295,10 +301,16 @@ function expelStudent(student) {
 }
 
 function addStudentToSquad(student) {
-  if (student.squad === "Not a member") {
+  if ((student.squad === "Not a member" && student.bloodstatus === "Pure") || student.house === "Slytherin") {
     student.squad = "Member";
     document.querySelector(".dialogue").classList.remove("hide");
     document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is now a member of the inquisitorial squad`;
+    setTimeout(() => {
+      document.querySelector(".dialogue").classList.add("hide");
+    }, 2000);
+  } else if (student.bloodstatus !== "Pure" || student.house !== "Slytherin") {
+    document.querySelector(".dialogue").classList.remove("hide");
+    document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} is not allowed in the inquisitorial squad`;
     setTimeout(() => {
       document.querySelector(".dialogue").classList.add("hide");
     }, 2000);
