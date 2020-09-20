@@ -1,0 +1,243 @@
+* {
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+:root {
+  --button-main: #443036;
+  --button-hover: #916a75;
+  --button-text: #efe3df;
+  --basic-text: #1d0e0c;
+  --article: #efe3df;
+  --gryffindor-text: #2b0c0c;
+  --hufflepuff-text: #30270a;
+  --ravenclaw-text: #0e0e2b;
+  --slytherin-text: #0f2209;
+}
+
+/************************************************************* more general styling **********************************************************************/
+
+.heading {
+  text-align: center;
+  margin-top: 40px;
+  font-family: "Yeseva One", cursive;
+}
+
+body {
+  background-color: #c49686;
+}
+
+#container {
+  max-width: 1000px;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
+  align-items: baseline;
+  margin: 40px 30px 40px 30px;
+}
+
+button {
+  background-color: var(--button-main);
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  color: var(--button-text);
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--button-hover);
+}
+
+h1 {
+  color: var(--basic-text);
+  font-family: "Yeseva One", cursive;
+  line-height: 60px;
+  font-size: 2em;
+}
+
+h2 {
+  color: var(--basic-text);
+  font-family: "Yeseva One", cursive;
+  line-height: 30px;
+}
+
+p {
+  color: var(--basic-text);
+  font-family: "Raleway", sans-serif;
+  line-height: 30px;
+}
+
+article {
+  background-color: var(--article);
+  border-radius: 10px;
+  width: 100%;
+  padding: 25px 25px 25px 25px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
+  grid-gap: 40px;
+}
+
+label {
+  color: #3a1c19;
+  font-family: "Raleway", sans-serif;
+  line-height: 30px;
+  font-size: 1em;
+}
+
+.hide {
+  display: none;
+}
+
+/*********************************************************** details popup styling *****************************************************************/
+
+.closing_button {
+  margin: 0;
+}
+
+.close {
+  background-color: #443036;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
+  font-family: sans-serif;
+  color: #fff;
+  cursor: pointer;
+}
+
+#popup {
+  display: none;
+  position: fixed;
+  background-color: hsla(282, 14%, 12%, 0.74);
+  height: 100vh;
+  width: 100vw;
+}
+
+#popup .info {
+  position: relative;
+  padding: 100px;
+  top: 5%;
+  width: 80%;
+  height: 550px;
+}
+
+#popup button {
+  background-color: var(--article);
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  color: var(--basic-text);
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#popup .picture {
+  margin-left: 10em;
+}
+
+#popup .texts {
+  margin-left: -15em;
+}
+
+/****************************************************** buttons and other navigational styling  *********************************************************/
+
+#sort_label {
+  font-family: "Raleway", sans-serif;
+}
+
+#sorting {
+  border-radius: 5px;
+  border: none;
+  height: 30px;
+  padding: 7px;
+}
+
+.search_field {
+  display: flex;
+  margin-top: 40px;
+}
+
+#student_search {
+  border-radius: 10px;
+  width: 500px;
+  border: none;
+  height: 30px;
+}
+
+.buttons_wrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+.buttons_wrapper button {
+  margin: 0px 5px 5px 5px;
+  cursor: pointer;
+}
+
+.display_box {
+  background-color: #efe3df;
+  border-radius: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 7px;
+  margin-bottom: 40px;
+}
+
+.dialogue {
+  position: fixed;
+  background-color: hsla(282, 14%, 12%, 0.74);
+  height: 100vh;
+  width: 100vw;
+}
+
+.message_container {
+  background-color: var(--article);
+  border-radius: 10px;
+  position: relative;
+  padding: 50px;
+  top: 25%;
+  width: 80%;
+}
+
+.message {
+  text-align: center;
+  font-size: 1.25em;
+}
+
+.hacked {
+  background-color: #000000;
+}
+
+.hacked_text {
+  color: #2ad400;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 3em;
+  text-align: center;
+}
+
+.gryffindor {
+  background-image: url("crests/gryffindor.png");
+}
+.hufflepuff {
+  background-image: url("crests/hufflepuff.png");
+}
+.ravenclaw {
+  background-image: url("crests/ravenclaw.png");
+}
+.slytherin {
+  background-image: url("crests/slytherin.png");
+}
