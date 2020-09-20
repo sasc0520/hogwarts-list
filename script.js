@@ -30,19 +30,19 @@ window.addEventListener(
   })
 );
 
+function loadJSON() {
+  return fetch(endpoint).then(response => response.json());
+}
+function loadFamilies() {
+  return fetch(familiesEndpoint).then(familyresponse => familyresponse.json());
+}
+
 document.addEventListener("keydown", secretKeyStroke);
 
 function secretKeyStroke(e) {
   if (e.code === "KeyH") {
     hackTheSystem();
   }
-}
-
-function loadJSON() {
-  return fetch(endpoint).then(response => response.json());
-}
-function loadFamilies() {
-  return fetch(familiesEndpoint).then(familyresponse => familyresponse.json());
 }
 
 function registerButtons() {
@@ -143,7 +143,9 @@ function displayStudent(student) {
   clone.querySelector(".gender").textContent = student.gender;
   clone.querySelector(".house").textContent = student.house;
   clone.querySelector("img").src = `images/${student.img}`;
-  clone.querySelector("img").addEventListener("click", () => showDetails(student));
+  clone.querySelector("img").addEventListener("click", () => {
+    showDetails(student);
+  });
   clone.querySelector(".expel").addEventListener("click", () => expelStudent(student));
   clone.querySelector(".add_member").addEventListener("click", () => addStudentToSquad(student));
   clone.querySelector(".add_prefect").addEventListener("click", () => {
@@ -160,13 +162,12 @@ function showDetails(student) {
 
   document.querySelector(".name").textContent = student.firstName + " " + student.nickName + " " + student.middleName + " " + student.lastName;
   document.querySelector(".gender").textContent = student.gender;
-  document.querySelector(".house > span").textContent = student.house;
+  document.querySelector(".house_details > span").textContent = student.house;
   document.querySelector(".blood > span").textContent = student.bloodstatus;
   document.querySelector(".prefect > span").textContent = student.prefect;
   document.querySelector(".squad > span").textContent = student.squad;
   document.querySelector(".expelled > span").textContent = student.expelled;
   document.querySelector("img").src = `images/${student.img}`;
-
   addHouseTheme(student);
 }
 
@@ -177,11 +178,11 @@ function hideDetails() {
 function addHouseTheme(student) {
   document.querySelector("#popup .info").className = "info";
   document.querySelector("#popup h2").className = "";
-  document.querySelectorAll("#popup p").forEach(p => (p.className = ""));
+  // document.querySelectorAll("#popup p").forEach(p => (p.className = ""));
   const className = student.house.toLowerCase();
   document.querySelector("#popup .info").classList.add(className);
   document.querySelector("#popup h2").classList.add(className);
-  document.querySelectorAll("#popup p").forEach(p => p.classList.add(className));
+  // document.querySelectorAll("#popup p").forEach(p => p.classList.add(className));
 }
 
 function capitalize(name) {
@@ -267,9 +268,7 @@ function sortStudents(sortBy) {
   } else if (sortBy === "lastname") {
     sortedList = sortedList.sort(sortByLastname);
   }
-  // const sortedByLastname = list.sort(sortByLastname);
   displayList(sortedList);
-  // displayList(sortedByLastname);
 }
 
 function sortByFirstname(studentA, studentB) {
@@ -292,7 +291,7 @@ function expelStudent(student) {
   if (student.hacker === true) {
     student.expelled = "Not expelled";
     document.querySelector(".dialogue").classList.remove("hide");
-    document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} cannot be expelled`;
+    document.querySelector(".message").innerHTML = `${student.firstName} ${student.middleName} ${student.lastName} cannot be expelled`;
     setTimeout(() => {
       document.querySelector(".dialogue").classList.add("hide");
     }, 2000);
@@ -305,6 +304,7 @@ function expelStudent(student) {
     setTimeout(() => {
       document.querySelector(".dialogue").classList.add("hide");
     }, 2000);
+    displayList(studentArray);
   } else {
     document.querySelector(".dialogue").classList.remove("hide");
     document.querySelector(".message").innerHTML = `${student.firstName} ${student.lastName} has already been expelled`;
@@ -312,7 +312,6 @@ function expelStudent(student) {
       document.querySelector(".dialogue").classList.add("hide");
     }, 2000);
   }
-  displayList(studentArray);
 }
 
 function addStudentToSquad(student) {
@@ -393,11 +392,14 @@ function removeStudentAsPrefect(student) {
 }
 
 function hackTheSystem() {
+  document.removeEventListener("keydown", secretKeyStroke);
+
   hacked = true;
   const hacker = Object.create(Student);
   hacker.firstName = "Sascha";
-  hacker.lastName = "Brouer";
-  hacker.img = "placeholder.png";
+  hacker.middleName = "Syntax";
+  hacker.lastName = "Error";
+  hacker.img = "hacker.png";
   hacker.house = "Gryffindor";
   hacker.gender = "An attack helicopter";
   hacker.bloodstatus = "Half";
