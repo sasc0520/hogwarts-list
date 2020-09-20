@@ -7,7 +7,7 @@
   --button-main: #443036;
   --button-hover: #916a75;
   --button-text: #efe3df;
-  --basic-text: #3a1c19;
+  --basic-text: #1d0e0c;
   --article: #efe3df;
   --gryffindor-text: #2b0c0c;
   --hufflepuff-text: #30270a;
@@ -211,19 +211,32 @@ label {
   top: 25%;
   width: 80%;
 }
+
+.message {
+  text-align: center;
+  font-size: 1.25em;
+}
+
+.hacked {
+  background-color: #000000;
+}
+
+.hacked_text {
+  color: #2ad400;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 3em;
+  text-align: center;
+}
+
 .gryffindor {
   background-image: url("crests/gryffindor.png");
-  color: var(--gryffindor-text);
 }
 .hufflepuff {
   background-image: url("crests/hufflepuff.png");
-  color: var(--hufflepuff-text);
 }
 .ravenclaw {
   background-image: url("crests/ravenclaw.png");
-  color: var(--ravenclaw-text);
 }
 .slytherin {
   background-image: url("crests/slytherin.png");
-  color: var(--slytherin-text);
 }

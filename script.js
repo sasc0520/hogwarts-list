@@ -178,11 +178,9 @@ function hideDetails() {
 function addHouseTheme(student) {
   document.querySelector("#popup .info").className = "info";
   document.querySelector("#popup h2").className = "";
-  // document.querySelectorAll("#popup p").forEach(p => (p.className = ""));
   const className = student.house.toLowerCase();
   document.querySelector("#popup .info").classList.add(className);
   document.querySelector("#popup h2").classList.add(className);
-  // document.querySelectorAll("#popup p").forEach(p => p.classList.add(className));
 }
 
 function capitalize(name) {
@@ -393,6 +391,16 @@ function removeStudentAsPrefect(student) {
 
 function hackTheSystem() {
   document.removeEventListener("keydown", secretKeyStroke);
+
+  document.querySelector(".dialogue").classList.remove("hide");
+  document.querySelector(".message_container").classList.add("hacked");
+  document.querySelector(".message").classList.add("hacked_text");
+  document.querySelector(".message").innerHTML = `YOU HAVE BEEN HACKED.`;
+  setTimeout(() => {
+    document.querySelector(".dialogue").classList.add("hide");
+    document.querySelector(".message_container").classList.remove("hacked");
+    document.querySelector(".message").classList.remove("hacked_text");
+  }, 2000);
 
   hacked = true;
   const hacker = Object.create(Student);
