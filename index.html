@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap" rel="stylesheet" />
+    <title>Hogwarts Student List</title>
+  </head>
+  <body>
+    <div class="dialogue hide">
+      <div class="message_container">
+        <p class="message"></p>
+      </div>
+    </div>
+    <section id="popup">
+      <article class="info">
+        <div class="closing_button">
+          <button class="close">X</button>
+        </div>
+        <div class="picture">
+          <img src="" alt="" />
+        </div>
+        <div class="texts">
+          <h2 class="name"></h2>
+          <p class="gender"></p>
+          <p class="house_details">House: <span></span></p>
+          <p class="blood">Blood: <span></span></p>
+          <p class="prefect">Prefect: <span></span></p>
+          <p class="squad">Squad: <span></span></p>
+          <p class="expelled">Expelled: <span></span></p>
+        </div>
+      </article>
+    </section>
+    <section id="container">
+      <div class="heading">
+        <h1>HOGWARTS SCHOOL OF WITCHCRAFT AND WIZARDRY</h1>
+        <h2>List of Students</h2>
+      </div>
+      <div class="search_field">
+        <input type="search" id="student_search" placeholder="Search for a student" />
+        <button class="search_button">Search</button>
+      </div>
+      <nav>
+        <button class="filter" data-action="filter" data-theme="gryffindor" data-option="gryffindor">Gryffindor</button>
+        <button class="filter" data-action="filter" data-theme="hufflepuff" data-option="hufflepuff">Hufflepuff</button>
+        <button class="filter" data-action="filter" data-theme="ravenclaw" data-option="ravenclaw">Ravenclaw</button>
+        <button class="filter" data-action="filter" data-theme="slytherin" data-option="slytherin">Slytherin</button>
+        <button class="filter" data-action="filter" data-option="expelled">Expelled</button>
+        <button class="filter" data-action="filter" data-option="all">All</button>
+        <label id="sort_label">Sort by</label>
+        <button class="sort" data-action="sort" data-sort="firstname">Firstname</button>
+        <button class="sort" data-action="sort" data-sort="lastname">Lastname</button>
+      </nav>
+
+      <div class="display_box">
+        <!-- here we display the counter of students -->
+        <p class="total_students">Students: <span> </span></p>
+        <p class="expelled_students">Expelled: <span> </span></p>
+        <p class="gryffindor_students">Gryffindor: <span> </span></p>
+        <p class="hufflepuff_students">Hufflepuff: <span> </span></p>
+        <p class="ravenclaw_students">Ravenclaw: <span> </span></p>
+        <p class="slytherin_students">Slytherin: <span> </span></p>
+        <p class="displayed_students">Displayed: <span> </span></p>
+      </div>
+      <div id="list">
+        <main>
+          <!-- content is copied in here  -->
+        </main>
+      </div>
+      <template>
+        <article>
+          <div class="student_image">
+            <img src="" alt="" />
+          </div>
+          <div class="student_info">
+            <h2 class="name"></h2>
+            <p class="gender"></p>
+            <p class="house"></p>
+          </div>
+          <div class="buttons_wrapper">
+            <button class="remove_prefect">remove prefect</button>
+            <button class="add_prefect">make prefect</button>
+            <button class="add_member">add to squad</button>
+            <button class="expel">expel</button>
+          </div>
+        </article>
+      </template>
+    </section>
+  </body>
+  <footer>
+    <p>Crest artwork found <a href="https://www.pinterest.dk/pin/35747390779134770/">here</a> - all credits go to the real artist.</p>
+  </footer>
+  <script src="script.js"></script>
+</html>
