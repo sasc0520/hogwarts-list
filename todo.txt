@@ -1,7 +1,0 @@
-CSS
-
--- fix the responsitivity of the article tags in the display list - it looks horrendous and makes it side scroll - NOT good!
-
-JS
-
--- WANT: make it easy to see which filter you are on
