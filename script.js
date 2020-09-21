@@ -202,14 +202,14 @@ function findImage(firstName, lastName) {
   // This enables a Web page to update just part of a page without disrupting what the user is doing. XMLHttpRequest is used heavily in AJAX programming."
   // --source MDN on XMLHttpRequest
   let request = new XMLHttpRequest();
-  request.open("HEAD", "/images/" + img, false);
+  request.open("HEAD", "images/" + img, false);
   request.send();
 
   if (request.status !== 404) {
     return img;
   } else {
     img = lastName.toLowerCase() + "_" + firstName.toLowerCase() + ".png";
-    request.open("HEAD", "/images/" + img, false);
+    request.open("HEAD", "images/" + img, false);
     request.send();
 
     if (request.status !== 404) {
